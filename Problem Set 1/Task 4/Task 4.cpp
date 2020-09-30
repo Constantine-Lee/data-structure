@@ -12,34 +12,34 @@ int main()
     int selection = 0;
     int position[2] = {0, 0};
 
+    Unit* unit;
     Unit u1("Constantine", LAND, 0, position, 100, 100, 100, 100, 100, 100, Active);
-    Dragon d1("Constantine", LAND, 0, position, 100, 100, 100, 100, 100, 100, Active);
-    Bowman b1("Constantine", LAND, 0, position, 100, 100, 100, 100, 100, 100, Active);
-    Thief t1("Constantine", LAND, 0, position, 100, 100, 100, 100, 100, 100, Active);
+    Dragon d1("Constantine", LAND, 0, position, 200, 200, 200, 200, 200, 200, Active);
+    Bowman b1("Constantine", LAND, 0, position, 50, 50, 50, 50, 50, 50, Active);
+    Thief t1("Constantine", LAND, 0, position, 10, 10, 10, 10, 10, 10, Active);
 
     std::cout << "Program Start\n";
 
     while (unitSelection != 5 && selection != 6)
-    {
-        Unit unit;
+    {        
         std::cout << "Press 1 for Base Unit, 2 for Dragon, 3 for Bowman, 4 for Thief, 5 to quit: ";
         if (std::cin >> unitSelection)
         {
             if (unitSelection == 1)
             {
-                unit = u1;
+                unit = &u1;
             }
             else if (unitSelection == 2)
             {
-                unit = d1;
+                unit = &d1;
             }
             else if (unitSelection == 3)
             {
-                unit = b1;
+                unit = &b1;
             }
             else if (unitSelection == 4)
             {
-                unit = t1;
+                unit = &t1;
             }
             else
             {
@@ -59,29 +59,27 @@ int main()
         {
             if (selection == 1)
             {
-                unit.PingStatus();
+                unit->PingStatus();
             }
             else if (selection == 2)
             {
-                std::cout << "Listening..." << std::endl;
-                string message;
-                std::cin >> message;
-                unit.Listen(message);
+                std::cout << "Listening..." << std::endl;              
+                unit->Listen();
             }
             else if (selection == 3)
             {
                 std::cout << "Telling..." << std::endl;
-                unit.Tell();
+                unit->Tell();
             }
             else if (selection == 4)
             {
                 std::cout << "Listening..." << std::endl;
-                std::cin >> unit;
+                std::cin >> *unit;
             }
             else if (selection == 5)
             {
                 std::cout << "Telling..." << std::endl;
-                std::cout << unit;
+                std::cout << *unit;
             }
             else 
             {
@@ -97,4 +95,7 @@ int main()
             continue;
         }
     }
+
+    // declare the pointer point to 'nowhere', no need to delete u1, d1, b1, t1 since it is stack based memeory
+    unit = NULL;
 }

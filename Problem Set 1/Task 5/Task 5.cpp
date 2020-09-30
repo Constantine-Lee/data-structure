@@ -8,7 +8,7 @@
 
 int main()
 {
-    string selection ;
+    string selection ="";
    
     string intermediate;
     int position[2] = { 0, 0 };
@@ -17,29 +17,37 @@ int main()
     Unit u1("Constantine", LAND, 0, position, 100, 100, 100, 100, 100, 100, Active);
     std::cout << "Program Start\n";
 
-    std::cout << "Command Message: Damage <Value>, Heal <Value>, Move <Value> <Value> " << std::endl;
-    //get the line and save into selection
-    std::getline(std::cin, selection);
-    std::stringstream check(selection);
+    while (true) {
+        tokens.clear();
+        u1.PingStatus();
+        std::cout << "Command Message: Damage <Value>, Heal <Value>, Move <Value> <Value> " << std::endl;
+        //get the line and save into selection
+        std::getline(std::cin, selection);
+        
+        std::stringstream check(selection);
 
-    while (std::getline(check, intermediate, ' ')) {
-        tokens.push_back(intermediate);
-    }
-    
-    if (tokens.size() == 2) {
-        if (tokens[0] == "Damage") {
-            u1.setCurrentHP(u1.getCurrentHP() - std::stoi(tokens[1]));
+        //string tokenizer
+        while (std::getline(check, intermediate, ' ')) {
+            tokens.push_back(intermediate);
         }
-        else if (tokens[0] == "Heal") {
-            u1.setCurrentHP(u1.getCurrentHP() + std::stoi(tokens[1]));
+
+        // if command size is 2 then check whether to Damage or Heal, if 3 then execute Move command;
+        if (tokens.size() == 2) {
+            if (tokens[0] == "Damage") {
+                u1.setCurrentHP(u1.getCurrentHP() - std::stoi(tokens[1]));
+            }
+            else if (tokens[0] == "Heal") {
+                u1.setCurrentHP(u1.getCurrentHP() + std::stoi(tokens[1]));
+            }
         }
-    }
-    else if (tokens.size() == 3) {
-        if (tokens[0] == "Move") {
-            int newPos[2] = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-            u1.setPosition(newPos);
+        else if (tokens.size() == 3) {
+            if (tokens[0] == "Move") {
+                int newPos[2] = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
+                u1.setPosition(newPos);
+            }
         }
-    }
-   
-    u1.PingStatus();    
+        else {
+            std::cout << "Invalid input" << std::endl;
+        }
+    }          
 }

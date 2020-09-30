@@ -3,11 +3,14 @@
 #include <string>
 using std::string;
 
+enum UnitCategory { LAND, AIR, WATER, BUILDING, TERRAIN };
+enum GateState { Passive, Active, Destroyed };
+
 class Unit
 {
 private:
 	string fOwner;
-	enum class UnitCategory { LAND, AIR, WATER, BUILDING, TERRAIN } fUnitCat;
+	UnitCategory fUnitCat;
 	int fID;
 	int fPosition[2];
 	int fMaxHP;
@@ -16,7 +19,7 @@ private:
 	int fCurrentShield;
 	int fMaxEnergy;
 	int fCurrentEnergy;
-	enum class GateState { Passive, Active, Destroyed } fGateState;
+	GateState fGateState;
 
 public:
 	Unit() {};

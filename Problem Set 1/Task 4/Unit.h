@@ -52,11 +52,12 @@ public:
 	void setMaxEnergy(int maxEnergy) { fMaxEnergy = maxEnergy; }
 	void setCurrentEnergy(int currentEnergy) { fCurrentEnergy = currentEnergy; }
 	void setGateState(GateState gateState) { fGateState = gateState; }
-
+	
 	void PingStatus() { 		
-		std::cout << "Owner: " << fOwner << ", Unit category: " << fUnitCat << ", ID: " << fID << ", Max HP: " << fMaxHP << ", Current HP: " << fCurrentHP << ", Max Shield: " << fMaxShield << ", Current Shield: " << fCurrentShield << ", Max Energy: " << fMaxEnergy << ", Current Energy: " << fCurrentEnergy << ", Gate State: " << fGateState << std::endl; 
+		std::cout << "Owner: " << fOwner << ", Unit category: " << fUnitCat << ", ID: " << fID << ", Max HP: " << fMaxHP << ", Current HP: " << fCurrentHP << ", Max Shield: " << fMaxShield << ", Current Shield: " << fCurrentShield << ", Max Energy: " << fMaxEnergy << ", Current Energy: " << fCurrentEnergy << ", Gate State: " << fGateState << ", Position: " << "x: " << fPosition[0] << " y: " << fPosition[1] << std::endl;
 	}
-	void Listen(string message) { fMessage = message; }
+	void Listen() { std::cin >> fMessage; }
+
 	void Tell() { std::cout << fMessage << std::endl; }
 
 	friend std::istream& operator>>(std::istream& aIStream, Unit& unit) {
@@ -68,8 +69,6 @@ public:
 		aOstream << unit.fMessage << std::endl;
 		return aOstream;
 	}
-
 	~Unit(){}
-
 };
 

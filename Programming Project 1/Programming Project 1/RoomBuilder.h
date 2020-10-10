@@ -41,6 +41,7 @@ public:
 	Room buildRoom() {
 		Room room(rand() % 20, rand() % 20, rand() % 20, rand() % 2, roomDesc[rand() % 20]);
 		room.addMonster(monsterBuilder.buildMonster());
+		room.addMonster(monsterBuilder.buildMonster());
 
 		Room room1(rand() % 20, rand() % 20, rand() % 20, rand() % 2, roomDesc[rand() % 20]);
 		room.addRoom(room1);

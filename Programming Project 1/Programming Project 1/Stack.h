@@ -43,7 +43,7 @@ public:
     }
 
     // Utility function to return top element in a stack  
-    DataType peek()
+    DataType& peek()
     {
         // Check for empty stack  
         if (!isEmpty())
@@ -97,11 +97,12 @@ public:
         else
         {
             temp = top;
+            int counter = 0;
             while (temp != NULL)
             {
-
+                counter++;
                 // Print node data  
-                cout << temp->data << "-> ";
+                cout << "(" << counter << ")" << temp->data << endl;
 
                 // Assign temp link to temp  
                 temp = temp->next;

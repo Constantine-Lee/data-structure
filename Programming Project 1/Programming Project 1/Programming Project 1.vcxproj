@@ -145,6 +145,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="LinkedListNode.cpp" />
+    <ClCompile Include="Party.cpp" />
     <ClCompile Include="StackNode.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterBuilder.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListNode.h" />
+    <ClInclude Include="Party.h" />
     <ClInclude Include="StackNode.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterBuilder.h" />

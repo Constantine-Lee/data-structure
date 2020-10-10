@@ -10,11 +10,18 @@ public:
 	int waterElem;
 	int windElem;
 	string monsterDes;
+	int maxHP;
+	int hP;
 
-	Monster(int FireElem, int WaterElem, int WindElem, string MonsterDes) : 
-		fireElem(FireElem), waterElem(WaterElem), windElem(WindElem), monsterDes(MonsterDes) {};
+	Monster(int MaxHP, int HP, int FireElem, int WaterElem, int WindElem, string MonsterDes) : 
+		maxHP(MaxHP), hP(HP), fireElem(FireElem), waterElem(WaterElem), windElem(WindElem), monsterDes(MonsterDes) {};
 
 	Monster() {};
+
+	friend ostream& operator<<(ostream& aOstream, Monster monster) {
+		aOstream << monster.monsterDes << endl;
+		return aOstream;
+	}
 
 	~Monster() {};
 };

@@ -9,13 +9,14 @@
 #include "WindSlime.h"
 #include "WaterSlime.h"
 #include "LinkedList.h"
-
+#include "Party.h"
+#include "windows.h"
 
 using namespace std;
 
 int main()
 {
-    LinkedList<Slime>* slimes = new LinkedList<Slime>();
+    Party<Slime>* slimes = new Party<Slime>();
     FireSlime fireSlime(80, 80, 5);
     WaterSlime waterSlime(120, 120, 3);
     WindSlime windSlime(100, 100, 4);
@@ -32,43 +33,40 @@ int main()
     if (charSelection == 1) {
         cout << "Please tell me your name..." << endl;
         cin >> fireSlime.name;
-        system("cls");
-        cout << fireSlime.name << "," << endl << "    " << " Water Slime and Wind Slime will be joining you for this adventure..." << endl;
-        slimes->addAtTail(fireSlime);
-        slimes->addAtTail(waterSlime);
-        slimes->addAtTail(windSlime);
+        cout << endl << fireSlime.name << "," << endl << "    " << " Water Slime and Wind Slime will be joining you for this adventure..." << endl;
+        slimes->addMember(fireSlime);
+        slimes->addMember(waterSlime);
+        slimes->addMember(windSlime);
     }
     else if (charSelection == 2) {
         cout << "Please tell me your name..." << endl;
         cin >> waterSlime.name;
-        system("cls");
-        cout << waterSlime.name << "," << endl << "    " << " Fire Slime and Wind Slime will be joining you for this adventure..." << endl;
-        slimes->addAtTail(waterSlime);
-        slimes->addAtTail(fireSlime);
-        slimes->addAtTail(windSlime);
+        cout << endl << waterSlime.name << "," << endl << "    " << " Fire Slime and Wind Slime will be joining you for this adventure..." << endl;
+        slimes->addMember(waterSlime);
+        slimes->addMember(fireSlime);
+        slimes->addMember(windSlime);
     }
     else if (charSelection == 3) {
         cout << "Please tell me your name..." << endl;
         cin >> windSlime.name;
-        system("cls");
-        cout << windSlime.name << "," << endl << "    " << "Fire Slime and Water Slime will be joining you for this adventure..." << endl;
-        slimes->addAtTail(windSlime);
-        slimes->addAtTail(waterSlime);
-        slimes->addAtTail(fireSlime);
+        cout << endl << windSlime.name << "," << endl << "    " << "Fire Slime and Water Slime will be joining you for this adventure..." << endl;
+        slimes->addMember(windSlime);
+        slimes->addMember(waterSlime);
+        slimes->addMember(fireSlime);
     }
 
     Item slimeBanner("Slime Party Banner", "", 1);
-    Slime::inventory.addAtTail(slimeBanner);
+    slimes->inventory.addAtTail(slimeBanner);
 
     Item smallPotion("Small Potiion", "", 1);
-    Slime::inventory.addAtTail(smallPotion);
+    slimes->inventory.addAtTail(smallPotion);
 
     cout << endl << "Party Overview" << endl;
-    slimes->display();
+    slimes->listMembers();
     cout << endl << "Inventory Overview" << endl;
-    Slime::inventory.display();
-    cout << Slime::inventory.get(1);
-    cout << Slime::inventory.get(2);
+    slimes->inventory.display();
+    cout << slimes->inventory.get(1);
+    cout << slimes->inventory.get(2);
 
     cout << endl << "Let the Adventure Begins !!!" << endl;
     cout << endl << "Press any key to continue..." << endl;
@@ -78,60 +76,135 @@ int main()
     RoomBuilder roomBuilder;
 
     Room arr[] = { roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom() };
+
     int n = sizeof(arr) / sizeof(arr[0]);
     Tree<Room> tree;
     TreeNode<Room>* root = new TreeNode<Room>();
     root = tree.insertLevelOrder(arr, root, 0, n, NULL);
     
     TreeNode<Room>* currNode = root;    
-
+        
     while (true) {
-        if (currNode) {
+        if (currNode) {  
+            system("cls");
             cout << "Entered room..." << endl;
             cout << endl << currNode->data.roomIntro << endl;
-            cout << endl << "Enter any key to continue..." << endl;
+            Sleep(1000);
+            
+            while (!currNode->data.monsters->isEmpty()) {     
+                Monster monster = currNode->data.monsters->peek();
 
-            string placeHolder;
-            cin >> placeHolder;
+                cout << endl << "Monster appeared !!!" << endl;                
+                Sleep(300);
+                cout << endl << monster.monsterDes << endl;
+                
+                Sleep(1000);
+                cout << endl << "============Battle Start============" << endl;
+                Sleep(1000);
+                for (int j = 1; monster.hP >= 0; j++) {
+                    cout << endl << "Round " << j << endl;
+                    for (int i = 1; i <= slimes->size(); i++) {
+                        ::Sleep(200);
+                        Slime& slime = slimes->getMembers(i);
+                        int damageReceived;
+                        if (slime.type == "Fire Slime") {
+                            damageReceived = monster.fireElem;
+                        }
+                        else if (slime.type == "Water Slime") {
+                            damageReceived = monster.waterElem;
+                        }
+                        else if (slime.type == "Wind Slime") {
+                            damageReceived = monster.windElem;
+                        }
 
-            if (!currNode->data.monsters->isEmpty()) {
-                system("cls");
-                cout << "Monster appeared !!!" << endl;
-                cout << endl << currNode->data.monsters->peek().monsterDes << endl;
-            }
+                        if (slime.status != "Dead") {
+                            monster.hP -= slime.attack;
+                            cout << slime.name << " dealed " << slime.attack << " damage to Monster, received " << damageReceived << " damage." << endl;
+                            slime.hP -= damageReceived;
+                        }
+                        if (slime.hP <= 0 && slime.status == "Normal") {
+                            slime.status = "Dead";
+                            cout << slime.name << " is dead." << endl;
+                        }
+                    }
+                }   
+                currNode->data.monsters->pop();   
+                cout << endl << "============Battle End============" << endl;
 
-            cout << "Move direction available: " << endl;
-            if (currNode->data.rooms->head != nullptr) {
-                cout << "   W(North)" << endl;
-            }
-            if (currNode->left) {
-                cout << "   A(West)" << endl;
-            }
-            if (currNode->parent) {
-                cout << "   S(South)" << endl;
-            }
-            if (currNode->right) {
-                cout << "   D(East)" << endl;
-            }
+                cout << endl << "Party Overview" << endl;
+                slimes->listMembers();
 
-            string movement;
-            cin >> movement;
+                if (currNode->data.monsters->isEmpty()) {
+                    cout << endl << "                                VICTORY VICTORY VICTORY !!!" << endl;
+                }                            
 
-            if (movement == "S") {
-                currNode = currNode->parent;
-            }
-            else if (movement == "W") {
-                currNode->data.explore();
-            }
-            else if (movement == "D") {
-                currNode = currNode->right;
+                cout << endl << "Press any key to continue..." << endl;
+                string wait;
+                cin >> wait;                
+            }            
 
-            }
-            else if (movement == "A") {
-                if (currNode->left) {
-                    currNode = currNode->left;
+            system("cls");
+            cout << "Resting..." << endl;
+
+            while (true) {
+                cout << endl << "Action Available:" << endl;
+                cout << "(1) Check Surrounding" << endl;
+                cout << "(2) Use Item" << endl;
+                cout << "(3) Gacha!!!" << endl;
+                cout << "(4) Move..." << endl;
+
+                string chooice;
+                cin >> chooice;
+
+                if (chooice == "1") {
+
                 }
-            }
+                else if (chooice == "2") {
+                    cout << endl << "List of Items: " << endl;
+                    slimes->inventory.display();
+                    string itemUseSelection;
+                    cin >> itemUseSelection;
+                        
+                }
+                else if (chooice == "3") {
+
+                }
+                else if (chooice == "4") {
+                    cout << endl << "Move direction available: " << endl;
+                    if (currNode->data.rooms->head != nullptr) {
+                        cout << "   W(North)" << endl;
+                    }
+                    if (currNode->left) {
+                        cout << "   A(West)" << endl;
+                    }
+                    if (currNode->parent) {
+                        cout << "   S(South)" << endl;
+                    }
+                    if (currNode->right) {
+                        cout << "   D(East)" << endl;
+                    }
+
+                    string movement;
+                    cin >> movement;
+
+                    if (movement == "S") {
+                        currNode = currNode->parent;
+                    }
+                    else if (movement == "W") {
+                        currNode->data.explore();
+                    }
+                    else if (movement == "D") {
+                        currNode = currNode->right;
+
+                    }
+                    else if (movement == "A") {
+                        if (currNode->left) {
+                            currNode = currNode->left;
+                        }
+                    }
+                    break;
+                }
+            }            
         }                 
     }
 }

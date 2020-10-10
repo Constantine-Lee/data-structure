@@ -4,6 +4,6 @@ class WaterSlime :
     public Slime
 {
 public:
-    WaterSlime(int MaxHP, int HP, int attack, string Name = "Water Slime") : Slime(MaxHP, HP, attack, Name) {};
+    WaterSlime(int MaxHP, int HP, int attack, string Name = "Water Slime") : Slime(MaxHP, HP, attack, "Water Slime", Name) {};
 };
 

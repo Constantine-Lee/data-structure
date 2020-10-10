@@ -12,7 +12,7 @@ public:
     }
 
     /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
-    DataType get(int index) {
+    DataType& get(int index) {
         if (index > size) throw "Index Invalid";
         LinkedListNode<DataType>* temp = head->next;
         for (int i = 1; i < index; i++) temp = temp->next;

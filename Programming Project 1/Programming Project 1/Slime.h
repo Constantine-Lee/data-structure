@@ -13,10 +13,13 @@ public:
 	int maxHP;
 	int hP;
 	int attack;
-	static LinkedList<Item> inventory;
+	string type;
+	string status;
 
-	Slime(int MaxHP, int HP, int Attack, string Name) :
-		maxHP(MaxHP), hP(HP), attack(Attack), name(Name) {};
+	Slime(int MaxHP, int HP, int Attack, string Type, string Name) :
+		maxHP(MaxHP), hP(HP), attack(Attack), type(Type), name(Name) {
+		status = "Normal";
+	};
 	Slime() {};
 
 	friend ostream& operator<<(ostream& aOstream, Slime slime) {

@@ -1,9 +1,3 @@
-﻿  FireSlime.cpp
-  LinkedList.cpp
-  Programming Project 1.cpp
+﻿  Programming Project 1.cpp
 D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\RoomBuilder.h(16,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Slime.cpp
-  WaterSlime.cpp
-  WindSlime.cpp
-  Generating Code...
   Programming Project 1.vcxproj -> D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Debug\Programming Project 1.exe

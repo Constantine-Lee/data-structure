@@ -24,6 +24,11 @@ public:
 			rooms = new DoublyLinkedList<Room>();
 	};
 
+	friend ostream& operator<<(ostream& aOstream, Room room) {
+		aOstream << room.roomIntro << endl;
+		return aOstream;
+	}
+
 	void addMonster(Monster monster) {
 		monsters->push(monster);
 	}

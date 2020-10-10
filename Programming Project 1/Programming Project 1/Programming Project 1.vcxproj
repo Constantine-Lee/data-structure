@@ -139,11 +139,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="DoublyLinkedList.cpp" />
+    <ClCompile Include="DoublyLinkedNode.cpp" />
+    <ClCompile Include="FireSlime.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="LinkedListNode.cpp" />
+    <ClCompile Include="StackNode.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterBuilder.cpp" />
+    <ClCompile Include="TreeNode.cpp" />
+    <ClCompile Include="RoomBuilder.cpp" />
+    <ClCompile Include="Slime.cpp" />
+    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Programming Project 1.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="WaterSlime.cpp" />
+    <ClCompile Include="WindSlime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Node.h" />
+    <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="DoublyLinkedNode.h" />
+    <ClInclude Include="FireSlime.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="LinkedListNode.h" />
+    <ClInclude Include="StackNode.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterBuilder.h" />
+    <ClInclude Include="TreeNode.h" />
+    <ClInclude Include="RoomBuilder.h" />
+    <ClInclude Include="Slime.h" />
+    <ClInclude Include="Stack.h" />
+    <ClInclude Include="Tree.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="WaterSlime.h" />
+    <ClInclude Include="WindSlime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,11 +1,50 @@
-﻿  FireSlime.cpp
-  LinkedList.cpp
-  Party.cpp
-  Slime.cpp
+﻿  CodeReuse.cpp
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\RoomBuilder.h(16,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(100,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(100,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(100,1): error C2232: '->Stack<Monster>::isEmpty': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(101,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(101,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(101,1): error C2232: '->Stack<Monster>::peek': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(137,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(137,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(137,1): error C2232: '->Stack<Monster>::pop': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(146,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(146,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(146,1): error C2232: '->Stack<Monster>::isEmpty': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(264,1): error C2819: type 'DoublyLinkedList<Room>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(15): message : see declaration of 'DoublyLinkedList<Room>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(264,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(264,1): error C2232: '->DoublyLinkedList<Room>::head': left operand has 'class' type, use '.'
+  DoublyLinkedList.cpp
+  RoomBuilder.cpp
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\RoomBuilder.h(16,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Programming Project 1.cpp
 D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\RoomBuilder.h(16,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Programming Project 1.cpp(21,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  WaterSlime.cpp
-  WindSlime.cpp
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(100,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(100,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(100,1): error C2232: '->Stack<Monster>::isEmpty': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(101,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(101,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(101,1): error C2232: '->Stack<Monster>::peek': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(137,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(137,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(137,1): error C2232: '->Stack<Monster>::pop': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(146,1): error C2819: type 'Stack<Monster>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(14): message : see declaration of 'Stack<Monster>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(146,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(146,1): error C2232: '->Stack<Monster>::isEmpty': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(264,1): error C2819: type 'DoublyLinkedList<Room>' does not have an overloaded member 'operator ->'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Room.h(15): message : see declaration of 'DoublyLinkedList<Room>'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(264,1): message : did you intend to use '.' instead?
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\CodeReuse.h(264,1): error C2232: '->DoublyLinkedList<Room>::head': left operand has 'class' type, use '.'
+D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Programming Project 1.cpp(13,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Room.cpp
   Generating Code...
-  Programming Project 1.vcxproj -> D:\Swinburne Units\Data Structure\Programming Project 1\Programming Project 1\Debug\Programming Project 1.exe

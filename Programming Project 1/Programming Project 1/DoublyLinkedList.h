@@ -22,9 +22,6 @@ public:
         head = nullptr;
     }
 
-    DoublyLinkedList(const DoublyLinkedList<DataType>& dll) = delete;
-    DoublyLinkedList<DataType>& operator=(DoublyLinkedList<DataType> const&) = delete;
-
     void insertFront(DataType val)
     {
         DoublyLinkedNode<DataType>* node = new DoublyLinkedNode<DataType>(val);

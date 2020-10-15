@@ -39,14 +39,14 @@ public:
 "A dim bluish light suffuses this chamber, its source obvious at a glance. Blue-glowing lichen and violet-glowing moss cling to the ceiling and spread across the floor. It even creeps down and up each wall, as if the colonies on the floor and ceiling are growing to meet each other. Their source seems to be a glowing, narrow crack in the ceiling, the extent of which you cannot gauge from your position. The air in the room smells fresh and damp." };
 
 	Room buildRoom() {
-		Room room(rand() % 20, rand() % 20, rand() % 20, rand() % 2, roomDesc[rand() % 20]);
+		Room room(roomDesc[rand() % 20]);
 		room.addMonster(monsterBuilder.buildMonster());
 		room.addMonster(monsterBuilder.buildMonster());
 
-		Room room1(rand() % 20, rand() % 20, rand() % 20, rand() % 2, roomDesc[rand() % 20]);
+		Room room1(roomDesc[rand() % 20]);
 		room.addRoom(room1);
 
-		Room room2(rand() % 20, rand() % 20, rand() % 20, rand() % 2, roomDesc[rand() % 20]);
+		Room room2(roomDesc[rand() % 20]);
 		room.addRoom(room2);
 		return room;
 	};

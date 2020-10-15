@@ -3,6 +3,7 @@
 #include <iostream>
 #include "LinkedList.h"
 #include "Item.h"
+#include <stdlib.h>     /* srand, rand */
 
 using namespace std;
 
@@ -21,6 +22,10 @@ public:
 		status = "Normal";
 	};
 	Slime() {};
+
+	int throwDice() {
+		return rand() % 10 + 1;
+	}
 
 	friend ostream& operator<<(ostream& aOstream, Slime slime) {
 		aOstream << slime.name << " -> " << "HP: " << slime.hP << "/" << slime.maxHP << " Attack: " << slime.attack << endl;

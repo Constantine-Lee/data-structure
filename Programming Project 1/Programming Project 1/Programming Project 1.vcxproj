@@ -142,9 +142,12 @@
     <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="DoublyLinkedNode.cpp" />
     <ClCompile Include="FireSlime.cpp" />
+    <ClCompile Include="GachaMachine.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Iterator.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="LinkedListNode.cpp" />
+    <ClCompile Include="Lottery.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="StackNode.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -163,9 +166,12 @@
     <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="DoublyLinkedNode.h" />
     <ClInclude Include="FireSlime.h" />
+    <ClInclude Include="GachaMachine.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Iterator.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListNode.h" />
+    <ClInclude Include="Lottery.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="StackNode.h" />
     <ClInclude Include="Monster.h" />

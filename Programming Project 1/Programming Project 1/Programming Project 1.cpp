@@ -11,11 +11,17 @@
 #include "LinkedList.h"
 #include "Party.h"
 #include "windows.h"
+#include "GachaMachine.h"
 
 using namespace std;
 
 int main()
 {
+    /* initialize random seed: */
+    srand(time(0));
+
+    GachaMachine gM;
+    Lottery l = gM.generateLottery();
     Party<Slime>* slimes = new Party<Slime>();
     FireSlime fireSlime(80, 80, 5);
     WaterSlime waterSlime(120, 120, 3);
@@ -58,15 +64,16 @@ int main()
     Item slimeBanner("Slime Party Banner", "", 1);
     slimes->inventory.addAtTail(slimeBanner);
 
-    Item smallPotion("Small Potiion", "", 1);
+    Item smallPotion("Small Potion", "", 1);
     slimes->inventory.addAtTail(smallPotion);
+
+    Item gachaKey("Gacha Key", "", 1);
+    slimes->inventory.addAtTail(gachaKey);
 
     cout << endl << "Party Overview" << endl;
     slimes->listMembers();
     cout << endl << "Inventory Overview" << endl;
     slimes->inventory.display();
-    cout << slimes->inventory.get(1);
-    cout << slimes->inventory.get(2);
 
     cout << endl << "Let the Adventure Begins !!!" << endl;
     cout << endl << "Press any key to continue..." << endl;
@@ -89,7 +96,7 @@ int main()
             system("cls");
             cout << "Entered room..." << endl;
             cout << endl << currNode->data.roomIntro << endl;
-            Sleep(1000);
+            Sleep(100);
             
             while (!currNode->data.monsters->isEmpty()) {     
                 Monster monster = currNode->data.monsters->peek();
@@ -129,24 +136,31 @@ int main()
                     }
                 }   
                 currNode->data.monsters->pop();   
+                ::Sleep(100);
                 cout << endl << "============Battle End============" << endl;
 
+                ::Sleep(100);
                 cout << endl << "Party Overview" << endl;
                 slimes->listMembers();
 
+                ::Sleep(100);
                 if (currNode->data.monsters->isEmpty()) {
                     cout << endl << "                                VICTORY VICTORY VICTORY !!!" << endl;
                 }                            
 
+                ::Sleep(100);
                 cout << endl << "Press any key to continue..." << endl;
                 string wait;
                 cin >> wait;                
-            }            
-
-            system("cls");
-            cout << "Resting..." << endl;
+            }        
 
             while (true) {
+                system("cls");
+                cout << "Resting..." << endl;
+                cout << endl << "Party Overview" << endl;
+                slimes->listMembers();
+                cout << endl << "Inventory Overview" << endl;
+                slimes->inventory.display();
                 cout << endl << "Action Available:" << endl;
                 cout << "(1) Check Surrounding" << endl;
                 cout << "(2) Use Item" << endl;
@@ -162,12 +176,92 @@ int main()
                 else if (chooice == "2") {
                     cout << endl << "List of Items: " << endl;
                     slimes->inventory.display();
-                    string itemUseSelection;
+                    cout << "Input: ";
+                    int itemUseSelection;
                     cin >> itemUseSelection;
-                        
+                    
+                    if (slimes->inventory.get(itemUseSelection).name == "Small Potion") {
+                        cout << endl << "Which character you want to use potion on ?" << endl;
+                        slimes->listMembers();
+                        cout << "Input: ";
+                        int charSelection;
+                        cin >> charSelection;
+                        Slime* healSlime;
+                        healSlime = &(slimes->getMembers(charSelection));
+                        healSlime->hP += 10;
+                        if (healSlime->hP > healSlime->maxHP) {
+                            healSlime->hP = healSlime->maxHP;
+                        }
+                        cout << endl << healSlime->name << "recovered 10 hp." << endl;
+                    }
                 }
                 else if (chooice == "3") {
+                    bool haveGachaKey = false;
+                    for (int i = 1; i <= slimes->inventory.size; i++) {
+                        if (slimes->inventory.get(i).name == "Gacha Key") {
+                            slimes->inventory.get(i).amount--;
+                            cout << endl << "1 Gache Key used." << endl;
+                            if (slimes->inventory.get(i).amount == 0) {
+                                slimes->inventory.deleteAtIndex(i);
+                            }
+                            haveGachaKey = true;
+                            break;
+                        }
+                    }
+                    if (haveGachaKey) {       
+                        cout << endl << "Which character you want to use lottery on ?" << endl;
+                        slimes->listMembers();
+                        int lotterySlimeSelection;
+                        cin >> lotterySlimeSelection;
+                        Slime* lotterySlime;
+                        lotterySlime = &(slimes->getMembers(lotterySlimeSelection));
 
+                        cout << endl << "Throwing Dice.";
+                        for (int i = 0; i < 10; i++) {
+                            Sleep(100);
+                            cout << ".";
+                        }                        
+                        int diceNumber = fireSlime.throwDice();
+                        cout << "You got " << diceNumber << " !" << endl;
+
+                        for (int i = 1; i <= diceNumber; l.nextSlot(), i++) {
+                            Sleep(200);
+                            string lotteryResult = l.getSlot();
+                            if (lotteryResult == "HP") {
+                                lotterySlime->hP++;
+                                lotterySlime->maxHP++;
+                                cout << "(" << i << ") " << l.getSlot() << ": " << "Increased HP of " << lotterySlime->name << " by 1" << endl;
+                            }
+                            else if (lotteryResult == "Attack") {
+                                lotterySlime->attack++;
+                                cout << "(" << i << ") " << l.getSlot() << ": " << "Increased Attack of " << lotterySlime->name << " by 1" << endl;
+                            }
+                            else if (lotteryResult == "Small Potion") {
+                                bool found = false;
+                                int inventorySize = slimes->inventory.size;
+
+                                for (int i = 1; i <= inventorySize; i++) {
+                                    if (slimes->inventory.get(i).name == "Small Potion") {
+                                        slimes->inventory.get(i).amount++;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    Item smallPotion("Small Potion", "", 1);
+                                    slimes->inventory.addAtTail(smallPotion);
+                                }
+                                cout << "(" << i << ") " << l.getSlot() << ": " << "Acquire 1 Small Potion." << endl;
+                            }
+                        }
+                    }
+                    else {
+                        cout << "No Gacha Key found." << endl;
+                    }
+                    Sleep(200);
+                    cout << endl << "Press any key to continue..." << endl;
+                    string wait;
+                    cin >> wait;
                 }
                 else if (chooice == "4") {
                     cout << endl << "Move direction available: " << endl;

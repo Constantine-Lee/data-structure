@@ -1,5 +1,6 @@
 #pragma once
 #include "LinkedListNode.h"
+#include "windows.h"
 
 template <class DataType>
 class LinkedList
@@ -39,6 +40,7 @@ public:
         LinkedListNode<DataType>* temp = head;
         int counter = 0;
         while (temp->next != NULL) {
+            Sleep(100);
             counter++;
             temp = temp->next;
             cout << "(" << counter << ")" << temp->val ;
@@ -58,12 +60,11 @@ public:
 
     /** Delete the index-th node in the linked list, if the index is valid. */
     void deleteAtIndex(int index) {
-        if (index >= size) return;
+        if (index > size) return;
         LinkedListNode< DataType>* temp = head;
-        for (int i = 0; i < index; i++) temp = temp->next;
+        for (int i = 1; i < index; i++) temp = temp->next;
         LinkedListNode< DataType>* temp1 = temp->next;
         temp->next = temp1->next;
-        temp1->next = NULL;
         size--;
         delete temp1;
     }

@@ -72,6 +72,15 @@
     <ClCompile Include="Party.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GachaMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Iterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lottery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Room.h">
@@ -126,6 +135,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Party.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GachaMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lottery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

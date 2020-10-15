@@ -23,26 +23,21 @@ public:
         fIndex++;
         return *this;
     }
-
     Iterator operator++(int) {
         Iterator temp = *this;
         fIndex++;
         return temp;
     }
-
     Iterator& operator--() {
         fIndex--;
         return *this;
     }
-
     Iterator operator--(int) {
         Iterator temp = *this;
         fIndex--;
         return temp;
     }
-
     virtual bool operator==(const Iterator& aOther) const { return false; };
-
     virtual Iterator begin() const { return *this; }
     virtual Iterator end() const { return *this; }
 };

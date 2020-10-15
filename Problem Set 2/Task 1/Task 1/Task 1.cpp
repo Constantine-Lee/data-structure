@@ -31,34 +31,34 @@ int main()
             tokens.push_back(intermediate);
         }
 
-        // if command size is 2 then check whether to Damage or Heal, if 3 then execute Move command;
+        // Check each token to determine what action to be taken
         if (tokens.size() == 3) {
             if (tokens[1] == "ID") {
                 if (tokens[2] == "GET") {
-                    if (tokens[0] == "1") {
+                    if (stoi(tokens[0]) == u1.getEntityID()) {
                         std::cout << u1.getEntityID() << std::endl;
                     }
-                    else if (tokens[0] == "2") {
+                    else if (stoi(tokens[0]) == u2.getEntityID()) {
                         std::cout << u2.getEntityID() << std::endl;
                     }
                 }
             }
             else if (tokens[1] == "NAME") {
                 if (tokens[2] == "GET") {
-                    if (tokens[0] == "1") {
+                    if (stoi(tokens[0]) == u1.getEntityID()) {
                         std::cout << u1.getName() << std::endl;
                     }
-                    else if (tokens[0] == "2") {
+                    else if (stoi(tokens[0]) == u2.getEntityID()) {
                         std::cout << u2.getName() << std::endl;
                     }
                 }
             }
             else if (tokens[1] == "HP") {
                 if (tokens[2] == "GET") {
-                    if (tokens[0] == "1") {
+                    if (stoi(tokens[0]) == u1.getEntityID()) {
                         std::cout << u1.getHP() << std::endl;
                     }
-                    else if (tokens[0] == "2") {
+                    else if (stoi(tokens[0]) == u2.getEntityID()) {
                         std::cout << u2.getHP() << std::endl;
                     }
                 }
@@ -67,36 +67,36 @@ int main()
         else if (tokens.size() == 4) {
             if (tokens[1] == "ID") {
                 if (tokens[2] == "SET") {
-                    if (tokens[0] == "1") {
+                    if (stoi(tokens[0]) == u1.getEntityID()) {
                         u1.setEntityID(std::stoi(tokens[3]));
                     }
-                    else if (tokens[0] == "2") {
+                    else if (stoi(tokens[0]) == u2.getEntityID()) {
                         u2.setEntityID(std::stoi(tokens[3]));
                     }
                 }
             }
             else if (tokens[1] == "NAME") {
-                if (tokens[2] == "GET") {
-                    if (tokens[0] == "1") {
+                if (tokens[2] == "SET") {
+                    if (stoi(tokens[0]) == u1.getEntityID()) {
                         u1.setName(tokens[3]);
                     }
-                    else if (tokens[0] == "2") {
+                    else if (stoi(tokens[0]) == u2.getEntityID()) {
                         u2.setName(tokens[3]);
                     }
                 }
             }
             else if (tokens[1] == "HP") {
-                if (tokens[2] == "GET") {
-                    if (tokens[0] == "1") {
+                if (tokens[2] == "SET") {
+                    if (stoi(tokens[0]) == u1.getEntityID()) {
                         u1.setHP(std::stoi(tokens[3]));
                     }
-                    else if (tokens[0] == "2") {
+                    else if (stoi(tokens[0]) == u2.getEntityID()) {
                         u2.setHP(std::stoi(tokens[3]));
                     }
                 }
             }
         }
-        else if (tokens[0] == "EXIT"){
+        else if (tokens[0] == "EXIT") {
             std::cout << "Exit Program" << std::endl;
             break;
         }

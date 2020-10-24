@@ -7,12 +7,6 @@ template <class DataType>
 class Tree
 {
 public:
-    TreeNode<DataType>* newNode(DataType data) {
-        TreeNode<DataType>* node = new TreeNode<DataType>();
-        node->data = data;
-        node->left = node->right = NULL;
-        return node;
-    }
 
     // Function to insert nodes in level order 
     TreeNode<DataType>* insertLevelOrder(DataType arr[], TreeNode<DataType>* root,
@@ -21,9 +15,10 @@ public:
         // Base case for recursion 
         if (i < n)
         {
-            TreeNode<DataType>* temp = newNode(arr[i]);
-            delete root;
-            root = temp;
+            TreeNode<DataType>* node = new TreeNode<DataType>();
+            node->data = arr[i];
+            node->left = node->right = NULL;
+            root = node;
            
             root->parent = parent;
 

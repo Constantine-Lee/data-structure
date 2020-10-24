@@ -7,51 +7,70 @@ class DoublyLinkedList
 {
 
 public:
-    DoublyLinkedNode<DataType>* head, * tail;
-    DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+    int size = 0;
+    DoublyLinkedNode<DataType>* head = head = new DoublyLinkedNode<DataType>();
+    DoublyLinkedList() {}
+
+    DoublyLinkedList(const DoublyLinkedList& src) {
+        DoublyLinkedNode<DataType>* node = src.head;
+        while (node->next != NULL)
+        {
+            node = node->next;
+            insertBack(node->data);
+        }
+    }
+
+    DoublyLinkedList& operator=(DoublyLinkedList src)
+    {
+        swap(head, src.head);
+        return *this;
+    }
 
     ~DoublyLinkedList()
     {
-        DoublyLinkedNode<DataType>* tmp = nullptr;
-        while (head)
-        {
-            tmp = head;
-            head = head->next;
-            delete tmp;
+        DoublyLinkedNode<DataType>* curr = head;
+        while (curr != NULL) {
+            DoublyLinkedNode<DataType>* next = curr->next;
+            delete curr;
+            curr = next;
         }
-        head = nullptr;
+        head = NULL;
     }
 
     void insertFront(DataType val)
     {
-        DoublyLinkedNode<DataType>* node = new DoublyLinkedNode<DataType>(val);
-        DoublyLinkedNode<DataType>* tmp = head;
-        // If empty
-        if (head == nullptr)
-        {
-            head = node;
-            tail = node;
-        }
-        else
-        {
-            node->next = head;
-            head = node;
-            node->next->prev = node;
-        }
+        DoublyLinkedNode<DataType>* temp = head->next;        
+        head->next = new DoublyLinkedNode<DataType>(val);
+        head->next->next = temp;
+        head->next->prev = head;
+        temp->prev = head->next;
+        size++;
     }
 
+    //correct
     void insertBack(DataType val)
     {
+        DoublyLinkedNode<DataType>* temp = head;
+        while (temp->next != NULL) temp = temp->next;
         DoublyLinkedNode<DataType>* node = new DoublyLinkedNode<DataType>(val);
-        if (head == nullptr) {
-            head = node;
-            tail = node;
-        }
-        else {
-            node->prev = tail;
-            tail->next = node;
-            tail = node;
-        }             
+        temp->next = node;
+        node->prev = temp;
+        size++;
+    }
+
+    /* Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+    DataType& get(int index) {
+        if (index > size) throw "Index Invalid";
+        DoublyLinkedNode<DataType>* temp = head;
+        for (int i = 0; i <= index; i++) temp = temp->next;
+        return temp->val;
+    }
+
+    DoublyLinkedNode<DataType>* getNode(int index) {
+        if (index > size) throw "Index Invalid";
+        DoublyLinkedNode<DataType>* temp = head;
+        for (int i = 0; i <= index; i++) temp = temp->next;
+        return temp;
     }
 
     void deleteVal(DataType val)
@@ -65,7 +84,7 @@ public:
         }
         else
         {
-            while (find != nullptr)
+            while (find != NULL)
             {
                 if (tmp->next == find)
                 {
@@ -90,7 +109,7 @@ private:
     DoublyLinkedNode<DataType>* findVal(DataType n) //returns node of the given number
     {
         DoublyLinkedNode<DataType>* node = head;
-        while (node != nullptr)
+        while (node != NULL)
         {
             if (node->data == n)
                 return node;
@@ -98,13 +117,13 @@ private:
             node = node->next;
         }
         std::cerr << "No such element in the list \n";
-        return nullptr;
+        return NULL;
     }
 
     void display(std::ostream& out = std::cout) const
     {
         DoublyLinkedNode<DataType>* node = head;
-        while (node != nullptr)
+        while (node != NULL)
         {
             out << node->data << " ";
             node = node->next;

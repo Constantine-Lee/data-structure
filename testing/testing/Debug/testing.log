@@ -1,0 +1,4 @@
+﻿  testing.cpp
+D:\Swinburne Units\Data Structure\testing\testing\testing.cpp(12,8): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\Swinburne Units\Data Structure\testing\testing\testing.cpp(15,8): warning C4834: discarding return value of function with 'nodiscard' attribute
+  testing.vcxproj -> D:\Swinburne Units\Data Structure\testing\testing\Debug\testing.exe

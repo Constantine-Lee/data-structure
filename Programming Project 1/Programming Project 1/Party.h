@@ -13,7 +13,7 @@ public:
 	}
 
 	void addMember(DataType newMember) {
-		slimes.addAtTail(newMember);
+		slimes.append(newMember);
 	}
 
 	void listMembers() {
@@ -21,7 +21,7 @@ public:
 	}
 
 	DataType& getMembers(int index) {
-		return slimes.get(index);
+		return slimes.getValue(index);
 	}
 
 	int size() {

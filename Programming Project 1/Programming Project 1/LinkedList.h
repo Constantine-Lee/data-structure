@@ -12,16 +12,43 @@ public:
     LinkedList() {
     }
 
+    LinkedList(const LinkedList& src) {
+        LinkedListNode<DataType>* node = src.head;
+        while (node->next != NULL)
+        {            
+            node = node->next;    
+            append(node->val);
+        }
+    }
+
+    LinkedList& operator=(LinkedList src)
+    {
+        swap(head, src.head);
+        return *this;
+    }
+
+    ~LinkedList()
+    {
+        LinkedListNode<DataType>* curr = head;
+        while (curr != NULL) {
+            LinkedListNode<DataType>* next = curr->next;
+            delete curr;
+            curr = next;
+        }
+        head = NULL;
+    }
+
     /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
-    DataType& get(int index) {
-        if (index > size) throw "Index Invalid";
-        LinkedListNode<DataType>* temp = head->next;
-        for (int i = 1; i < index; i++) temp = temp->next;
+    DataType& getValue(int index) {
+        if (index >= size) throw "Index Invalid";
+        LinkedListNode<DataType>* temp = head;
+        for (int i = 0; i <= index; i++) temp = temp->next;
         return temp->val;
     }
 
+    // correct
     /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
-    void addAtHead(DataType val) {
+    void prepend(DataType val) {
         LinkedListNode<DataType>* temp = head->next;
         head->next = new LinkedListNode<DataType>(val);
         head->next->next = temp;
@@ -29,7 +56,7 @@ public:
     }
 
     /** Append a node of value val to the last element of the linked list. */
-    void addAtTail(DataType val) {
+    void append(DataType val) {
         LinkedListNode< DataType>* temp = head;
         while (temp->next != NULL) temp = temp->next;
         temp->next = new LinkedListNode< DataType>(val);
@@ -60,9 +87,9 @@ public:
 
     /** Delete the index-th node in the linked list, if the index is valid. */
     void deleteAtIndex(int index) {
-        if (index > size) return;
+        if (index >= size) return;
         LinkedListNode< DataType>* temp = head;
-        for (int i = 1; i < index; i++) temp = temp->next;
+        for (int i = 0; i <= index; i++) temp = temp->next;
         LinkedListNode< DataType>* temp1 = temp->next;
         temp->next = temp1->next;
         size--;

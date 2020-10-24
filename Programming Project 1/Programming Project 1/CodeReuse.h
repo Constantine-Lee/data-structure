@@ -11,6 +11,7 @@
 #include "windows.h"
 #include "GachaMachine.h"
 
+
 class CodeReuse
 {
 public:
@@ -22,14 +23,19 @@ public:
     }
 
     // Setup World
-    TreeNode<Room>* WorldSetup() {
+    TreeNode<DoublyLinkedList<Room>>* WorldSetup() {
         RoomBuilder roomBuilder;
+        DoublyLinkedList<Room> rooms[9];
+        for (int i = 0; i < 9; i++) {
+            rooms[i].insertBack(roomBuilder.buildRoom(1));
+            rooms[i].insertBack(roomBuilder.buildRoom(2));
+        }        
 
-        Room arr[] = { roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom(), roomBuilder.buildRoom() };
+        DoublyLinkedList<Room> arr[9] = { rooms[0], rooms[1], rooms[2], rooms[3], rooms[4], rooms[5], rooms[6], rooms[7], rooms[8] };
 
         int n = sizeof(arr) / sizeof(arr[0]);
-        Tree<Room> tree;
-        TreeNode<Room>* root = new TreeNode<Room>();
+        Tree<DoublyLinkedList<Room>> tree;
+        TreeNode<DoublyLinkedList<Room>>* root = new TreeNode<DoublyLinkedList<Room>>();
         root = tree.insertLevelOrder(arr, root, 0, n, NULL);
 
         return root;
@@ -43,47 +49,49 @@ public:
         WindSlime windSlime(100, 100, 4);
 
         cout << "Who are YOU ?" << endl << endl;
-        cout << "Enter 1 if you are a Fire Slime..." << endl;
-        cout << "Enter 2 if you are a Water Slime..." << endl;
-        cout << "Enter 3 if you are a Wind Slime..." << endl;
+        cout << "(1) Fire Slime..." << endl;
+        cout << "(2) Water Slime..." << endl;
+        cout << "(3) Wind Slime..." << endl;
 
         int charSelection;
+        cout << "Input: ";
         cin >> charSelection;
 
-        system("cls");
-        if (charSelection == 1) {
-            cout << "Please tell me your name..." << endl;
+
+        cout << endl << "Please tell me your name..." << endl;
+        if (charSelection == 1) {            
             cin >> fireSlime.name;
-            cout << endl << fireSlime.name << "," << endl << "    " << " Water Slime and Wind Slime will be joining you for this adventure..." << endl;
+            system("cls");
+            cout << fireSlime.name << "," << endl << "    " << " Water Slime and Wind Slime will be joining you for this adventure..." << endl;
             slimes->addMember(fireSlime);
             slimes->addMember(waterSlime);
             slimes->addMember(windSlime);
         }
         else if (charSelection == 2) {
-            cout << "Please tell me your name..." << endl;
             cin >> waterSlime.name;
-            cout << endl << waterSlime.name << "," << endl << "    " << " Fire Slime and Wind Slime will be joining you for this adventure..." << endl;
+            system("cls");
+            cout << waterSlime.name << "," << endl << "    " << " Fire Slime and Wind Slime will be joining you for this adventure..." << endl;
             slimes->addMember(waterSlime);
             slimes->addMember(fireSlime);
             slimes->addMember(windSlime);
         }
         else if (charSelection == 3) {
-            cout << "Please tell me your name..." << endl;
             cin >> windSlime.name;
-            cout << endl << windSlime.name << "," << endl << "    " << "Fire Slime and Water Slime will be joining you for this adventure..." << endl;
+            system("cls");
+            cout << windSlime.name << "," << endl << "    " << "Fire Slime and Water Slime will be joining you for this adventure..." << endl;
             slimes->addMember(windSlime);
             slimes->addMember(waterSlime);
             slimes->addMember(fireSlime);
         }
 
         Item slimeBanner("Slime Party Banner", "", 1);
-        slimes->inventory.addAtTail(slimeBanner);
+        slimes->inventory.append(slimeBanner);
 
         Item smallPotion("Small Potion", "", 1);
-        slimes->inventory.addAtTail(smallPotion);
+        slimes->inventory.append(smallPotion);
 
         Item gachaKey("Gacha Key", "", 1);
-        slimes->inventory.addAtTail(gachaKey);
+        slimes->inventory.append(gachaKey);
 
         Overview(*slimes);
 
@@ -96,9 +104,11 @@ public:
     }
 
     // 
-    void BattlePhase(TreeNode<Room>* currNode, Party<Slime>* slimes) {
-        while (!currNode->data.monsters->isEmpty()) {
-            Monster monster = currNode->data.monsters->peek();
+    boolean BattlePhase(Room* currRoom, Party<Slime>* slimes) {
+        boolean fight = false;
+        while (!currRoom->monsters.isEmpty()) {
+            fight = true;
+            Monster monster = currRoom->monsters.peek();
 
             cout << endl << "Monster appeared !!!" << endl;
             ::Sleep(100);
@@ -109,7 +119,7 @@ public:
             ::Sleep(100);
             for (int j = 1; monster.hP >= 0; j++) {
                 cout << endl << "Round " << j << endl;
-                for (int i = 1; i <= slimes->size(); i++) {
+                for (int i = 0; i < slimes->size(); i++) {
                     ::Sleep(100);
                     Slime& slime = slimes->getMembers(i);
                     int damageReceived = 0;
@@ -134,7 +144,7 @@ public:
                     }
                 }
             }
-            currNode->data.monsters->pop();
+            currRoom->monsters.pop();
             ::Sleep(100);
             cout << endl << "============Battle End============" << endl;
 
@@ -143,24 +153,35 @@ public:
             slimes->listMembers();
 
             ::Sleep(100);
-            if (currNode->data.monsters->isEmpty()) {
-                cout << endl << "                                VICTORY VICTORY VICTORY !!!" << endl;
+            if (currRoom->monsters.isEmpty()) {
+                cout << endl << "                                ";
+                for (int i = 0; i < 3; i++) {
+                    ::Sleep(100);
+                    cout << " VICTORY";
+                }
+                cout << " !!!" << endl;
             }
-
-            ::Sleep(100);
-            cout << endl << "Press any key to continue..." << endl;
-            string wait;
-            cin >> wait;
+            else {
+                cout << endl << "Press any key to continue..." << endl;
+                string wait;
+                cin >> wait;
+            }
+            ::Sleep(100);            
         }
+        return fight;
     }
 
     //Character Selection
-    Slime* CharSelection(Party<Slime> slimes) {
-        slimes.listMembers();
+    Slime* CharSelection(Party<Slime>* slimes) {
+        slimes->listMembers();
         cout << "Input: ";
         int charSelection;
         cin >> charSelection;
-        return &(slimes.getMembers(charSelection));
+        return &(slimes->getMembers(charSelection - 1));
+    }
+
+    void checkSurrounding() {
+
     }
 
     //Use Item
@@ -171,32 +192,33 @@ public:
         int itemUseSelection;
         cin >> itemUseSelection;
 
-        if (slimes->inventory.get(itemUseSelection).name == "Small Potion") {
+        if (slimes->inventory.getValue(itemUseSelection - 1).name == "Small Potion") {
             cout << endl << "Which character you want to use potion on ?" << endl;
             Slime* healSlime;
-            healSlime = CharSelection(*slimes);
+            healSlime = CharSelection(slimes);
             healSlime->hP += 10;
             if (healSlime->hP > healSlime->maxHP) {
                 healSlime->hP = healSlime->maxHP;
             };
-            slimes->inventory.get(itemUseSelection).amount--;
+            slimes->inventory.getValue(itemUseSelection - 1).amount--;
             cout << endl << "1 Small Potion used." << endl;
-            if (slimes->inventory.get(itemUseSelection).amount == 0) {
-                slimes->inventory.deleteAtIndex(itemUseSelection);
+            if (slimes->inventory.getValue(itemUseSelection - 1).amount == 0) {
+                slimes->inventory.deleteAtIndex(itemUseSelection - 1);
             }
-            cout << endl << healSlime->name << "recovered 10 hp." << endl;
+            cout << endl << healSlime->name << " recovered 10 hp." << endl;
         }
     }
 
     //Gacha Action
     void GachaAction(Party<Slime>* slimes) {
         bool haveGachaKey = false;
-        for (int i = 1; i <= slimes->inventory.size; i++) {
-            if (slimes->inventory.get(i).name == "Gacha Key") {
-                slimes->inventory.get(i).amount--;
+        for (int i = 0; i < slimes->inventory.size; i++) {
+            string test = slimes->inventory.getValue(i).name;
+            if (slimes->inventory.getValue(i).name == "Gacha Key") {
+                slimes->inventory.getValue(i).amount--;
                 cout << endl << "1 Gache Key used." << endl;
-                if (slimes->inventory.get(i).amount == 0) {
-                    slimes->inventory.deleteAtIndex(i);
+                if (slimes->inventory.getValue(i).amount == 0) {
+                    slimes->inventory.deleteAtIndex(i - 1);
                 }
                 haveGachaKey = true;
                 break;
@@ -205,7 +227,7 @@ public:
         if (haveGachaKey) {
             cout << endl << "Which character you want to use lottery on ?" << endl;
             Slime* lotterySlime;
-            lotterySlime = CharSelection(*slimes);
+            lotterySlime = CharSelection(slimes);
 
             cout << endl << "Throwing Dice.";
             for (int i = 0; i < 10; i++) {
@@ -234,16 +256,16 @@ public:
                     bool found = false;
                     int inventorySize = slimes->inventory.size;
 
-                    for (int i = 1; i <= inventorySize; i++) {
-                        if (slimes->inventory.get(i).name == "Small Potion") {
-                            slimes->inventory.get(i).amount++;
+                    for (int i = 0; i < inventorySize; i++) {
+                        if (slimes->inventory.getValue(i).name == "Small Potion") {
+                            slimes->inventory.getValue(i).amount++;
                             found = true;
                             break;
                         }
                     }
                     if (!found) {
                         Item smallPotion("Small Potion", "", 1);
-                        slimes->inventory.addAtTail(smallPotion);
+                        slimes->inventory.append(smallPotion);
                     }
                     cout << "(" << i << ") " << lottery.getSlot() << ": " << "Acquire 1 Small Potion." << endl;
                 }
@@ -253,43 +275,50 @@ public:
             cout << "No Gacha Key found." << endl;
         }
         ::Sleep(100);
-        cout << endl << "Press any key to continue..." << endl;
-        string wait;
-        cin >> wait;
     }
 
     // Move Action 
-    void MoveAction(TreeNode<Room>* currNode) {
+    void MoveAction(TreeNode<DoublyLinkedList<Room>>** currNode, DoublyLinkedNode<Room>** currRoom) {
         cout << endl << "Move direction available: " << endl;
-        if (currNode->data.rooms->head != nullptr) {
-            cout << "   W(North)" << endl;
+        if ((*currRoom)->next) {
+            cout << "   W(Front)" << endl;
         }
-        if (currNode->left) {
-            cout << "   A(West)" << endl;
+        if ((*currNode)->left && (*currRoom)->data.id == 1) {
+            cout << "   A(Left)" << endl;
         }
-        if (currNode->parent) {
-            cout << "   S(South)" << endl;
+        if (!((*currNode)->parent == NULL && (*currRoom)->data.id == 1)) {
+            cout << "   S(Back)" << endl;
         }
-        if (currNode->right) {
-            cout << "   D(East)" << endl;
+        if ((*currNode)->right && (*currRoom)->data.id == 1) {
+            cout << "   D(Right)" << endl;
         }
 
         string movement;
+        cout << "Input: ";
         cin >> movement;
 
         if (movement == "S") {
-            currNode = currNode->parent;
+            if ((*currRoom)->data.id == 1 && (*currNode)->parent) {
+                *currNode = (*currNode)->parent;
+                *currRoom = (*currNode)->data.getNode(0);
+            }
+            else {
+                *currRoom = (*currRoom)->prev;
+            }            
         }
         else if (movement == "W") {
-            currNode->data.explore();
+            *currRoom = (*currRoom)->next;
         }
         else if (movement == "D") {
-            currNode = currNode->right;
-
+            if ((*currNode)->right && (*currRoom)->data.id == 1) {
+                *currNode = (*currNode)->right;
+                *currRoom = (*currNode)->data.getNode(0);
+            }
         }
         else if (movement == "A") {
-            if (currNode->left) {
-                currNode = currNode->left;
+            if ((*currNode)->left && (*currRoom)->data.id == 1) {
+                *currNode = (*currNode)->left;
+                *currRoom = (*currNode)->data.getNode(0);
             }
         }
     }

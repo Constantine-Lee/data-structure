@@ -28,8 +28,12 @@ public:
 	};
 
 	Monster buildMonster() {
-		int startingHP = rand() % 20 + 20;
-		Monster monster(startingHP, startingHP, rand() % 5, rand() % 5, rand() % 5, monsterDes[rand() % 15]);
+		int startingHP = rand() % 20 + 15;
+		bool reincarnate = false;
+		if (rand() % 10 == 9) {
+			reincarnate = true;
+		}
+		Monster monster(startingHP, startingHP, rand() % 5, rand() % 5, rand() % 5, monsterDes[rand() % 15], reincarnate);
 		return monster;
 	}
 };

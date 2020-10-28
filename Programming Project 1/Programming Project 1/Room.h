@@ -5,6 +5,7 @@
 #include "DoublyLinkedNode.h"
 #include "LinkedList.h"
 #include "Item.h"
+#include "Queue.h"
 
 class Room
 {
@@ -12,11 +13,12 @@ public:
 	int id;
 	string roomIntro;
 	Stack<Monster> monsters;	
-	LinkedList<Item> inventory;
+	boolean chest = true;
+	Queue<Item>* chests;
 
 	Room() {};
 
-	Room(int ID, string RoomIntro): id(ID), roomIntro(RoomIntro) {
+	Room(int ID, string RoomIntro, Queue<Item>* Chests): id(ID), roomIntro(RoomIntro), chests(Chests) {
 	};
 
 	friend ostream& operator<<(ostream& aOstream, Room room) {
@@ -24,11 +26,13 @@ public:
 		return aOstream;
 	}
 
-	void addMonster(Monster monster) {
-		monsters.push(monster);
+	Item openChest() {
+		chest = false;
+		return chests->dequeue();
 	}
 
-	void explore() {					
+	void addMonster(Monster monster) {
+		monsters.push(monster);
 	}
 
 	~Room() {};

@@ -24,11 +24,23 @@ public:
 
     // Setup World
     TreeNode<DoublyLinkedList<Room>>* WorldSetup() {
+        Queue<Item>* chests = new Queue<Item>();
+        int aztecGoldLocation = rand() % 2;
+        for (int i = 0; i < 2; i++) {
+            if (i == aztecGoldLocation) {
+                Item aztecGold("Aztec Gold", "", 1);
+                chests->enqueue(aztecGold);
+            }
+            else {
+                Item gachaKey("Gacha Key", "", 1);
+                chests->enqueue(gachaKey);
+            }
+        }
         RoomBuilder roomBuilder;
         DoublyLinkedList<Room> rooms[9];
         for (int i = 0; i < 9; i++) {
-            rooms[i].insertBack(roomBuilder.buildRoom(1));
-            rooms[i].insertBack(roomBuilder.buildRoom(2));
+            rooms[i].insertBack(roomBuilder.buildRoom(1, chests));
+            rooms[i].insertBack(roomBuilder.buildRoom(2, chests));
         }        
 
         DoublyLinkedList<Room> arr[9] = { rooms[0], rooms[1], rooms[2], rooms[3], rooms[4], rooms[5], rooms[6], rooms[7], rooms[8] };
@@ -140,8 +152,14 @@ public:
                     }
                     if (slime.hP <= 0 && slime.status == "Normal") {
                         slime.status = "Dead";
+                        slime.hP = 0;
                         cout << slime.name << " is dead." << endl;
-                    }
+                    }                    
+                }
+                if (slimes->getMembers(0).status == "Dead" && slimes->getMembers(1).status == "Dead" && slimes->getMembers(2).status == "Dead") {
+                    cout << endl << "All dead... all dead... all the slimes are dead..." << endl;
+                    cout << endl << "                                           GAME OVER" << endl;
+                    exit(0);
                 }
             }
             currRoom->monsters.pop();
@@ -152,7 +170,14 @@ public:
             cout << endl << "Party Overview" << endl;
             slimes->listMembers();
 
-            ::Sleep(100);
+            if (monster.reincarnate) {
+                ::Sleep(100);
+                cout << endl << "Monster reincarnate... Prepare for another battle..." << endl;
+                MonsterBuilder monsterBuilder;
+                currRoom->addMonster(monsterBuilder.buildMonster());
+            }                     
+       
+           ::Sleep(100);
             if (currRoom->monsters.isEmpty()) {
                 cout << endl << "                                ";
                 for (int i = 0; i < 3; i++) {
@@ -178,10 +203,6 @@ public:
         int charSelection;
         cin >> charSelection;
         return &(slimes->getMembers(charSelection - 1));
-    }
-
-    void checkSurrounding() {
-
     }
 
     //Use Item
@@ -257,17 +278,17 @@ public:
                     int inventorySize = slimes->inventory.size;
 
                     for (int i = 0; i < inventorySize; i++) {
-                        if (slimes->inventory.getValue(i).name == "Small Potion") {
+                        if (slimes->inventory.getValue(i).name == lotteryResult) {
                             slimes->inventory.getValue(i).amount++;
                             found = true;
                             break;
                         }
                     }
                     if (!found) {
-                        Item smallPotion("Small Potion", "", 1);
+                        Item smallPotion(lotteryResult, "", 1);
                         slimes->inventory.append(smallPotion);
                     }
-                    cout << "(" << i << ") " << lottery.getSlot() << ": " << "Acquire 1 Small Potion." << endl;
+                    cout << "(" << i << ") " << lottery.getSlot() << ": " << "Obtain 1 " << lotteryResult << "." << endl;
                 }
             }
         }

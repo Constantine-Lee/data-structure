@@ -48,7 +48,31 @@ int main()
                 cin >> chooice;
 
                 if (chooice == "1") {
-                    codeReuse.checkSurrounding();
+                    if ((*currentRoomPtr)->data.chest && !((*currentRoomPtr)->data.chests->isEmpty())) {
+                        Item chestItem = (*currentRoomPtr)->data.openChest();
+                        if (chestItem.name == "Aztec Gold") {
+                            cout << endl << "You had found Aztec Gold... You will be cursed for a thousand years..." << endl;
+                            cout << endl << "                                GAME OVER";
+                            exit(0);
+                        }
+
+                        bool found = false;
+                        for (int i = 0; i < slimes->inventory.size; i++) {
+                            if (slimes->inventory.getValue(i).name == chestItem.name) {
+                                slimes->inventory.getValue(i).amount++;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            Item smallPotion(chestItem.name, "", 1);
+                            slimes->inventory.append(smallPotion);
+                        }
+                        cout << endl << "Obtain 1 " << chestItem.name << "." << endl;
+                    }
+                    else {
+                        cout << endl << "Nothing found..." << endl;
+                    }
                 }
                 else if (chooice == "2") {
                     codeReuse.UseItem(slimes);

@@ -46,6 +46,14 @@ public:
         return temp->val;
     }
 
+    /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+    DataType get(int index) {
+        if (index >= size) throw "Index Invalid";
+        LinkedListNode<DataType>* temp = head;
+        for (int i = 0; i <= index; i++) temp = temp->next;
+        return temp->val;
+    }
+
     // correct
     /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
     void prepend(DataType val) {
@@ -85,15 +93,18 @@ public:
         size++;
     }
 
+    //correct
     /** Delete the index-th node in the linked list, if the index is valid. */
     void deleteAtIndex(int index) {
         if (index >= size) return;
         LinkedListNode< DataType>* temp = head;
-        for (int i = 0; i <= index; i++) temp = temp->next;
-        LinkedListNode< DataType>* temp1 = temp->next;
-        temp->next = temp1->next;
+        for (int i = 0; i < index; i++) {
+            temp = temp->next;
+        }
+        LinkedListNode< DataType>* deletedNode = temp->next;
+        temp->next = deletedNode->next;
         size--;
-        delete temp1;
+        delete deletedNode;
     }
 };
 

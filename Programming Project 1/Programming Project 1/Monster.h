@@ -12,9 +12,10 @@ public:
 	string monsterDes;
 	int maxHP;
 	int hP;
+	bool reincarnate;
 
-	Monster(int MaxHP, int HP, int FireElem, int WaterElem, int WindElem, string MonsterDes) : 
-		maxHP(MaxHP), hP(HP), fireElem(FireElem), waterElem(WaterElem), windElem(WindElem), monsterDes(MonsterDes) {};
+	Monster(int MaxHP, int HP, int FireElem, int WaterElem, int WindElem, string MonsterDes, bool Reincarnate) : 
+		maxHP(MaxHP), hP(HP), fireElem(FireElem), waterElem(WaterElem), windElem(WindElem), monsterDes(MonsterDes), reincarnate(Reincarnate) {};
 
 	Monster() {};
 

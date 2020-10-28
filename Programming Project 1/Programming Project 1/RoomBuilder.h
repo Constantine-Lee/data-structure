@@ -38,8 +38,8 @@ public:
 "This room is a tomb. Stone sarcophagi stand in five rows of three, each carved with the visage of a warrior lying in state. In their center, one sarcophagus stands taller than the rest. Held up by six squat pillars, its stone bears the carving of a beautiful woman who seems more asleep than dead. The carving of the warriors is skillful but seems perfunctory compared to the love a sculptor must have lavished upon the lifelike carving of the woman.",
 "A dim bluish light suffuses this chamber, its source obvious at a glance. Blue-glowing lichen and violet-glowing moss cling to the ceiling and spread across the floor. It even creeps down and up each wall, as if the colonies on the floor and ceiling are growing to meet each other. Their source seems to be a glowing, narrow crack in the ceiling, the extent of which you cannot gauge from your position. The air in the room smells fresh and damp." };
 
-	Room buildRoom(int id) {
-		Room room(id, roomDesc[rand() % 20]);
+	Room buildRoom(int id, Queue<Item>* chests) {
+		Room room(id, roomDesc[rand() % 20], chests);
 		room.addMonster(monsterBuilder.buildMonster());
 		room.addMonster(monsterBuilder.buildMonster());
 		return room;

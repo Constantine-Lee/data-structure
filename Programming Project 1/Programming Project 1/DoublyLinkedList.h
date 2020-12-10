@@ -8,24 +8,31 @@ class DoublyLinkedList
 
 public:
     int size = 0;
-    DoublyLinkedNode<DataType>* head = head = new DoublyLinkedNode<DataType>();
+    DoublyLinkedNode<DataType>* head = new DoublyLinkedNode<DataType>();
+    DoublyLinkedNode<DataType>* tail = new DoublyLinkedNode<DataType>();
+
     DoublyLinkedList() {}
 
+    // copy constructor
     DoublyLinkedList(const DoublyLinkedList& src) {
         DoublyLinkedNode<DataType>* node = src.head;
         while (node->next != NULL)
         {
             node = node->next;
-            insertBack(node->data);
+            append(node->data);
         }
     }
 
+    // assignment operator
     DoublyLinkedList& operator=(DoublyLinkedList src)
     {
         swap(head, src.head);
+        swap(tail, src.tail);
+        size = src.size;
         return *this;
     }
 
+    // destructor
     ~DoublyLinkedList()
     {
         DoublyLinkedNode<DataType>* curr = head;
@@ -37,28 +44,41 @@ public:
         head = NULL;
     }
 
-    void insertFront(DataType val)
+    // add at the start
+    void prepend(DataType val)
     {
-        DoublyLinkedNode<DataType>* temp = head->next;        
-        head->next = new DoublyLinkedNode<DataType>(val);
-        head->next->next = temp;
-        head->next->prev = head;
-        temp->prev = head->next;
-        size++;
-    }
-
-    //correct
-    void insertBack(DataType val)
-    {
-        DoublyLinkedNode<DataType>* temp = head;
-        while (temp->next != NULL) temp = temp->next;
         DoublyLinkedNode<DataType>* node = new DoublyLinkedNode<DataType>(val);
-        temp->next = node;
-        node->prev = temp;
+        if (head->next == NULL && tail->next == NULL) {
+            head->next = node;
+            tail->next = node;
+            node->prev = head;
+        }
+        else {
+            node->prev = head;
+            node->next = head->next;
+            head->next = node;
+        }
         size++;
     }
 
-    /* Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+   // add at the end
+    void append(DataType val)
+    {
+        DoublyLinkedNode<DataType>* node = new DoublyLinkedNode<DataType>(val);
+        if (head->next == NULL && tail->next == NULL) {
+            head->next = node;
+            tail->next = node;
+            node->prev = head;
+        }
+        else {
+            node->prev = tail->next;
+            tail->next->next = node;
+            tail->next = node;
+        }
+        size++;
+    }
+
+    /* Get the value of the index-th node in the linked list. If the index is invalid, throw error. */
     DataType& get(int index) {
         if (index > size) throw "Index Invalid";
         DoublyLinkedNode<DataType>* temp = head;
@@ -73,59 +93,49 @@ public:
         return temp;
     }
 
-    void deleteVal(DataType val)
-    {
-        DoublyLinkedNode<DataType>* find = findVal(val);
-        DoublyLinkedNode<DataType>* tmp = head;
-
-        if (tmp == find)
-        {
-            head = tmp->next;
+    //should be correct
+    /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+    void addAtIndex(int index, DataType val) {
+        if (index > size) return;
+        DoublyLinkedNode<DataType>* temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp->next;
         }
-        else
-        {
-            while (find != NULL)
-            {
-                if (tmp->next == find)
-                {
-                    tmp->next = find->next;
-                    find->next->prev = tmp;
-                    delete find;
-                    return;
-                }
-                tmp = tmp->next;
-            }
+        DoublyLinkedNode<DataType>* node = new DoublyLinkedNode<DataType>(val);
+        if (head->next == NULL && tail->next == NULL) {
+            head->next = node;
+            tail->next = node;
+            node->prev = head;
         }
+        else {
+            node->next = temp->next;
+            temp->next = node;
+            node->prev = temp;
+        }
+        size++;
     }
 
-    template <class U>
-    friend std::ostream& operator<<(std::ostream& os, const DoublyLinkedList<U>& dll) {
-        dll.display(os);
-        return os;
-    }
+    //should be correct
+    /** Delete the index-th node in the linked list, if the index is valid. */
+    void deleteAtIndex(int index) {
+        if (index >= size) return;
+        DoublyLinkedNode< DataType>* temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp->next;
+        }
+        DoublyLinkedNode< DataType>* deletedNode = temp->next;
+        temp->next = deletedNode->next;
+        deletedNode->next->prev = temp;
+        size--;
+        delete deletedNode;
+     }
+    
 
-private:
-
-    DoublyLinkedNode<DataType>* findVal(DataType n) //returns node of the given number
-    {
+    void display() {
         DoublyLinkedNode<DataType>* node = head;
         while (node != NULL)
         {
-            if (node->data == n)
-                return node;
-
-            node = node->next;
-        }
-        std::cerr << "No such element in the list \n";
-        return NULL;
-    }
-
-    void display(std::ostream& out = std::cout) const
-    {
-        DoublyLinkedNode<DataType>* node = head;
-        while (node != NULL)
-        {
-            out << node->data << " ";
+            cout << node->data << " ";
             node = node->next;
         }
     }

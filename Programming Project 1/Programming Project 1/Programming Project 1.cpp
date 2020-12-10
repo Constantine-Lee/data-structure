@@ -12,9 +12,13 @@ int main()
     /* initialize random seed: */
     srand(time(0));
     CodeReuse codeReuse;
+    // get pointer to current node
     TreeNode<DoublyLinkedList<Room>>* currentNode = codeReuse.WorldSetup();
+    // a pointer to pointer and initialise it with the pointer to current node
     TreeNode<DoublyLinkedList<Room>>** currentNodePtr = &currentNode;
+    // get pointer to the first room in current node
     DoublyLinkedNode<Room>* currentRoom = (*currentNodePtr)->data.getNode(0);
+    // a pointer to pointer and initialise it with the pointer to current room
     DoublyLinkedNode<Room>** currentRoomPtr = &currentRoom;
     Party<Slime>* slimes = codeReuse.PartySetup();
 
@@ -23,6 +27,7 @@ int main()
             system("cls");
             // Entered room
             cout << "Entered room..." << endl;
+            // print current room description
             cout << endl << (*currentRoomPtr)->data.roomIntro << endl; 
             ::Sleep(100);           
       
@@ -47,6 +52,7 @@ int main()
                 cout << "Input: ";
                 cin >> chooice;
 
+                // if check surrounding
                 if (chooice == "1") {
                     if ((*currentRoomPtr)->data.chest && !((*currentRoomPtr)->data.chests->isEmpty())) {
                         Item chestItem = (*currentRoomPtr)->data.openChest();
@@ -80,6 +86,7 @@ int main()
                 else if (chooice == "3") {
                     codeReuse.GachaAction(slimes);
                 }
+                // move action
                 else if (chooice == "4") {
                     codeReuse.MoveAction(currentNodePtr, currentRoomPtr);
                     break;

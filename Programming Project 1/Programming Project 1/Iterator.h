@@ -1,7 +1,5 @@
 #pragma once
-
 #include <iostream>
-
 using namespace std;
 
 class Iterator
@@ -11,9 +9,7 @@ public:
 	int fIndex;
 	const string* arr;
 
-	Iterator(const std::string* aArray, const int aLength, int aStart = 0) : arr(aArray), fLength(aLength), fIndex(aStart) {
-
-	}
+    Iterator(const std::string* aArray, const int aLength, int aStart = 0) : arr(aArray), fLength(aLength), fIndex(aStart) {}
 
 	int getfIndex() const { return fIndex; }
 

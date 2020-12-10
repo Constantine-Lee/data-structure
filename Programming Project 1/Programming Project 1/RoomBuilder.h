@@ -44,7 +44,5 @@ public:
 		room.addMonster(monsterBuilder.buildMonster());
 		return room;
 	};
-
-
 };
 

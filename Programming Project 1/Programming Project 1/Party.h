@@ -8,11 +8,9 @@ public:
 	LinkedList<DataType> slimes;
 	LinkedList<Item> inventory;
 
-	Party() {
+	Party() {}
 
-	}
-
-	void addMember(DataType newMember) {
+	void addMember(DataType newMember) {		
 		slimes.append(newMember);
 	}
 

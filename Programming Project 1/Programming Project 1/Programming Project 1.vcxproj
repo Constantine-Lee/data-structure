@@ -151,7 +151,6 @@
     <ClCompile Include="Lottery.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="StackNode.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterBuilder.cpp" />
     <ClCompile Include="TreeNode.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="Lottery.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="Queue.h" />
-    <ClInclude Include="StackNode.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterBuilder.h" />
     <ClInclude Include="TreeNode.h" />

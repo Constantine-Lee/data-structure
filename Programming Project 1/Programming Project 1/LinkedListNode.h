@@ -18,3 +18,4 @@ public:
         next = NULL;
     }
 };
+

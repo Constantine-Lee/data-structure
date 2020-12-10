@@ -15,11 +15,14 @@ public:
         // Base case for recursion 
         if (i < n)
         {
+            // create a node
             TreeNode<DataType>* node = new TreeNode<DataType>();
+            // initialise with data in arrat
             node->data = arr[i];
             node->left = node->right = NULL;
             root = node;
            
+            // se this node to point to its parent
             root->parent = parent;
 
             // insert left child 

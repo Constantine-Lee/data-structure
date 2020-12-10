@@ -10,7 +10,7 @@
 #include "Party.h"
 #include "windows.h"
 #include "GachaMachine.h"
-
+#include <typeinfo> 
 
 class CodeReuse
 {
@@ -24,9 +24,12 @@ public:
 
     // Setup World
     TreeNode<DoublyLinkedList<Room>>* WorldSetup() {
+        //pointer to queue of chests
         Queue<Item>* chests = new Queue<Item>();
-        int aztecGoldLocation = rand() % 2;
-        for (int i = 0; i < 2; i++) {
+        //get the location of buried Aztec Gold
+        int aztecGoldLocation = rand() % 18;
+        //fill in Item to the queue and Aztec Gold based on location
+        for (int i = 0; i < 18; i++) {
             if (i == aztecGoldLocation) {
                 Item aztecGold("Aztec Gold", "", 1);
                 chests->enqueue(aztecGold);
@@ -37,28 +40,33 @@ public:
             }
         }
         RoomBuilder roomBuilder;
+        // declare an array of 9 doubly linked list. 
+        // There will be 2 rooms in each doubly linked list.
         DoublyLinkedList<Room> rooms[9];
+        //build room and insert into doubly linked list
         for (int i = 0; i < 9; i++) {
-            rooms[i].insertBack(roomBuilder.buildRoom(1, chests));
-            rooms[i].insertBack(roomBuilder.buildRoom(2, chests));
+            Room room_1 = roomBuilder.buildRoom(1, chests);
+            rooms[i].append(room_1);
+            rooms[i].append(roomBuilder.buildRoom(2, chests));
         }        
-
+        // put doubly linked list into array
         DoublyLinkedList<Room> arr[9] = { rooms[0], rooms[1], rooms[2], rooms[3], rooms[4], rooms[5], rooms[6], rooms[7], rooms[8] };
-
         int n = sizeof(arr) / sizeof(arr[0]);
+        // tree generator
         Tree<DoublyLinkedList<Room>> tree;
+        // pointer to the root of tree
         TreeNode<DoublyLinkedList<Room>>* root = new TreeNode<DoublyLinkedList<Room>>();
+        // build the tree
         root = tree.insertLevelOrder(arr, root, 0, n, NULL);
-
         return root;
     }
 
     // Setup Party
     Party<Slime>* PartySetup() {
         Party<Slime>* slimes = new Party<Slime>();
-        FireSlime fireSlime(80, 80, 5);
-        WaterSlime waterSlime(120, 120, 3);
-        WindSlime windSlime(100, 100, 4);
+        FireSlime* fireSlime = new FireSlime(80, 80, 5);
+        WaterSlime* waterSlime = new WaterSlime(120, 120, 3);
+        WindSlime* windSlime = new WindSlime(100, 100, 4);
 
         cout << "Who are YOU ?" << endl << endl;
         cout << "(1) Fire Slime..." << endl;
@@ -69,31 +77,43 @@ public:
         cout << "Input: ";
         cin >> charSelection;
 
+        Slime* protagonistSlime = fireSlime;
+        if (charSelection == 1) {
+            protagonistSlime = fireSlime;            
+        }
+        else if (charSelection == 2) {
+            protagonistSlime = waterSlime;
+        }
+        else if (charSelection == 3) {
+            protagonistSlime = windSlime;
+        }
+        cout << endl << protagonistSlime->name << " gain ";
+        protagonistSlime->specialLuck();
 
         cout << endl << "Please tell me your name..." << endl;
         if (charSelection == 1) {            
-            cin >> fireSlime.name;
+            cin >> fireSlime->name;            
             system("cls");
-            cout << fireSlime.name << "," << endl << "    " << " Water Slime and Wind Slime will be joining you for this adventure..." << endl;
-            slimes->addMember(fireSlime);
-            slimes->addMember(waterSlime);
-            slimes->addMember(windSlime);
+            cout << fireSlime->name << "," << endl << "    " << " Water Slime and Wind Slime will be joining you for this adventure..." << endl;
+            slimes->addMember(*fireSlime);
+            slimes->addMember(*waterSlime);
+            slimes->addMember(*windSlime);
         }
         else if (charSelection == 2) {
-            cin >> waterSlime.name;
+            cin >> waterSlime->name;            
             system("cls");
-            cout << waterSlime.name << "," << endl << "    " << " Fire Slime and Wind Slime will be joining you for this adventure..." << endl;
-            slimes->addMember(waterSlime);
-            slimes->addMember(fireSlime);
-            slimes->addMember(windSlime);
+            cout << waterSlime->name << "," << endl << "    " << " Fire Slime and Wind Slime will be joining you for this adventure..." << endl;
+            slimes->addMember(*waterSlime);
+            slimes->addMember(*fireSlime);
+            slimes->addMember(*windSlime);
         }
         else if (charSelection == 3) {
-            cin >> windSlime.name;
+            cin >> windSlime->name;
             system("cls");
-            cout << windSlime.name << "," << endl << "    " << "Fire Slime and Water Slime will be joining you for this adventure..." << endl;
-            slimes->addMember(windSlime);
-            slimes->addMember(waterSlime);
-            slimes->addMember(fireSlime);
+            cout << windSlime->name << "," << endl << "    " << "Fire Slime and Water Slime will be joining you for this adventure..." << endl;
+            slimes->addMember(*windSlime);
+            slimes->addMember(*waterSlime);
+            slimes->addMember(*fireSlime);
         }
 
         Item slimeBanner("Slime Party Banner", "", 1);
@@ -115,11 +135,13 @@ public:
         return slimes;
     }
 
-    // 
+    // battle phase
     boolean BattlePhase(Room* currRoom, Party<Slime>* slimes) {
         boolean fight = false;
+        // if stack of monster is not empty
         while (!currRoom->monsters.isEmpty()) {
             fight = true;
+            // get the top element as monster to fight
             Monster monster = currRoom->monsters.peek();
 
             cout << endl << "Monster appeared !!!" << endl;
@@ -148,13 +170,8 @@ public:
                     if (slime.status != "Dead") {
                         monster.hP -= slime.attack;
                         cout << slime.name << " dealed " << slime.attack << " damage to Monster, received " << damageReceived << " damage." << endl;
-                        slime.hP -= damageReceived;
-                    }
-                    if (slime.hP <= 0 && slime.status == "Normal") {
-                        slime.status = "Dead";
-                        slime.hP = 0;
-                        cout << slime.name << " is dead." << endl;
-                    }                    
+                        slime.setHP(slime.getHP() - damageReceived);
+                    }                                       
                 }
                 if (slimes->getMembers(0).status == "Dead" && slimes->getMembers(1).status == "Dead" && slimes->getMembers(2).status == "Dead") {
                     cout << endl << "All dead... all dead... all the slimes are dead..." << endl;
@@ -162,6 +179,7 @@ public:
                     exit(0);
                 }
             }
+            // battle finished, remove monster from stack by pop operation
             currRoom->monsters.pop();
             ::Sleep(100);
             cout << endl << "============Battle End============" << endl;
@@ -170,6 +188,7 @@ public:
             cout << endl << "Party Overview" << endl;
             slimes->listMembers();
 
+            // if the popped monster reincarnate, then push a new reincarnated monster into the stack, and it will be the next monster to fight
             if (monster.reincarnate) {
                 ::Sleep(100);
                 cout << endl << "Monster reincarnate... Prepare for another battle..." << endl;
@@ -178,6 +197,7 @@ public:
             }                     
        
            ::Sleep(100);
+           // victory if there are no monsters left
             if (currRoom->monsters.isEmpty()) {
                 cout << endl << "                                ";
                 for (int i = 0; i < 3; i++) {
@@ -217,10 +237,7 @@ public:
             cout << endl << "Which character you want to use potion on ?" << endl;
             Slime* healSlime;
             healSlime = CharSelection(slimes);
-            healSlime->hP += 10;
-            if (healSlime->hP > healSlime->maxHP) {
-                healSlime->hP = healSlime->maxHP;
-            };
+            healSlime->setHP(healSlime->getHP() + 10);
             slimes->inventory.getValue(itemUseSelection - 1).amount--;
             cout << endl << "1 Small Potion used." << endl;
             if (slimes->inventory.getValue(itemUseSelection - 1).amount == 0) {
@@ -228,28 +245,34 @@ public:
             }
             cout << endl << healSlime->name << " recovered 10 hp." << endl;
         }
+        else if (slimes->inventory.getValue(itemUseSelection - 1).name == "Gacha Key") {
+            GachaAction(slimes);
+        }
     }
 
     //Gacha Action
     void GachaAction(Party<Slime>* slimes) {
         bool haveGachaKey = false;
+        // check if there is a Gacha Key available
         for (int i = 0; i < slimes->inventory.size; i++) {
             string test = slimes->inventory.getValue(i).name;
             if (slimes->inventory.getValue(i).name == "Gacha Key") {
                 slimes->inventory.getValue(i).amount--;
-                cout << endl << "1 Gache Key used." << endl;
+                cout << endl << "1 Gacha Key used." << endl;
                 if (slimes->inventory.getValue(i).amount == 0) {
-                    slimes->inventory.deleteAtIndex(i - 1);
+                    slimes->inventory.deleteAtIndex(i);
                 }
                 haveGachaKey = true;
                 break;
             }
         }
+        // if Gache Key available
         if (haveGachaKey) {
             cout << endl << "Which character you want to use lottery on ?" << endl;
             Slime* lotterySlime;
             lotterySlime = CharSelection(slimes);
 
+            // throw a dice
             cout << endl << "Throwing Dice.";
             for (int i = 0; i < 10; i++) {
                 ::Sleep(100);
@@ -259,20 +282,27 @@ public:
             cout << "You got " << diceNumber << " !" << endl;
 
             GachaMachine gM;
+            //get lottery
             Lottery lottery = gM.generateLottery();
 
+            // open number of slots based on dice number
             for (int i = 1; i <= diceNumber; lottery.nextSlot(), i++) {
                 ::Sleep(200);
                 string lotteryResult = lottery.getSlot();
+                // increase HP if slot prize is HP
                 if (lotteryResult == "HP") {
-                    lotterySlime->hP++;
+                    int amount = 1;
+                    lotterySlime->setHP(lotterySlime->getHP() + amount);
                     lotterySlime->maxHP++;
-                    cout << "(" << i << ") " << lottery.getSlot() << ": " << "Increased HP of " << lotterySlime->name << " by 1" << endl;
+                    cout << "(" << i << ") " << lottery.getSlot() << ": " << "Increased HP of " << lotterySlime->name << " by " << amount << endl;
                 }
+                // increase Attack if slot prize is Attack
                 else if (lotteryResult == "Attack") {
+                    int amount = 1;
                     lotterySlime->attack++;
-                    cout << "(" << i << ") " << lottery.getSlot() << ": " << "Increased Attack of " << lotterySlime->name << " by 1" << endl;
+                    cout << "(" << i << ") " << lottery.getSlot() << ": " << "Increased Attack of " << lotterySlime->name << " by " << amount << endl;
                 }
+                // put small potion into inventory
                 else if (lotteryResult == "Small Potion") {
                     bool found = false;
                     int inventorySize = slimes->inventory.size;
@@ -301,15 +331,19 @@ public:
     // Move Action 
     void MoveAction(TreeNode<DoublyLinkedList<Room>>** currNode, DoublyLinkedNode<Room>** currRoom) {
         cout << endl << "Move direction available: " << endl;
+        // if there is next room, print front
         if ((*currRoom)->next) {
             cout << "   W(Front)" << endl;
         }
+        // if there is left child node and the current room is the first room in the current node, print left
         if ((*currNode)->left && (*currRoom)->data.id == 1) {
             cout << "   A(Left)" << endl;
         }
+        // if there is parent node and the current room is the first room in the current node, print back
         if (!((*currNode)->parent == NULL && (*currRoom)->data.id == 1)) {
             cout << "   S(Back)" << endl;
         }
+        // if there is right child node and the current room is the first room in the current node, print right
         if ((*currNode)->right && (*currRoom)->data.id == 1) {
             cout << "   D(Right)" << endl;
         }
@@ -318,25 +352,33 @@ public:
         cout << "Input: ";
         cin >> movement;
 
+        // if player decided to move back
         if (movement == "S") {
+            // if current room is the first room in current node and there is parent node for current node, then move to parent node and set current room as first room in parent node.
             if ((*currRoom)->data.id == 1 && (*currNode)->parent) {
                 *currNode = (*currNode)->parent;
                 *currRoom = (*currNode)->data.getNode(0);
             }
             else {
+                // otherwise move to previous room in doubly linked list
                 *currRoom = (*currRoom)->prev;
             }            
         }
+        // if there is next room for current room in doubly linked list
         else if (movement == "W") {
             *currRoom = (*currRoom)->next;
         }
+        // the player select move right
         else if (movement == "D") {
+            // if there is right child node and the current room is first room in current node, then move to right child node and set current room as first room in parent node.
             if ((*currNode)->right && (*currRoom)->data.id == 1) {
                 *currNode = (*currNode)->right;
                 *currRoom = (*currNode)->data.getNode(0);
             }
         }
+        // the player select move left
         else if (movement == "A") {
+            // if there is left child node and the current room is first room in current node, then move to left child node and set current room as first room in parent node.
             if ((*currNode)->left && (*currRoom)->data.id == 1) {
                 *currNode = (*currNode)->left;
                 *currRoom = (*currNode)->data.getNode(0);
